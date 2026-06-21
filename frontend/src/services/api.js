@@ -1,5 +1,10 @@
 // AttendEase API Service Layer
 
+// Automatically detects if the app is running on a live server or localhost
+const BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? '' 
+  : 'https://onrender.com';
+
 const getHeaders = (isJson = true) => {
   const token = localStorage.getItem('attendease_token');
   const headers = {};
@@ -15,7 +20,7 @@ const getHeaders = (isJson = true) => {
 export const api = {
   // Authentication API
   async login(email, password) {
-    const res = await fetch('/api/auth/login', {
+    const res = await fetch(`${BASE_URL}/api/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
@@ -29,7 +34,7 @@ export const api = {
 
   // Students API
   async getStudents() {
-    const res = await fetch('/api/students', {
+    const res = await fetch(`${BASE_URL}/api/students`, {
       headers: getHeaders(false)
     });
     if (!res.ok) {
@@ -39,7 +44,7 @@ export const api = {
   },
 
   async addStudent(student) {
-    const res = await fetch('/api/students', {
+    const res = await fetch(`${BASE_URL}/api/students`, {
       method: 'POST',
       headers: getHeaders(true),
       body: JSON.stringify(student)
@@ -52,7 +57,7 @@ export const api = {
   },
 
   async updateStudent(id, student) {
-    const res = await fetch(`/api/students/${id}`, {
+    const res = await fetch(`${BASE_URL}/api/students/${id}`, {
       method: 'PUT',
       headers: getHeaders(true),
       body: JSON.stringify(student)
@@ -65,7 +70,7 @@ export const api = {
   },
 
   async deleteStudent(id) {
-    const res = await fetch(`/api/students/${id}`, {
+    const res = await fetch(`${BASE_URL}/api/students/${id}`, {
       method: 'DELETE',
       headers: getHeaders(false)
     });
@@ -77,7 +82,7 @@ export const api = {
 
   // Attendance API
   async getAttendance() {
-    const res = await fetch('/api/attendance', {
+    const res = await fetch(`${BASE_URL}/api/attendance`, {
       headers: getHeaders(false)
     });
     if (!res.ok) {
@@ -87,7 +92,7 @@ export const api = {
   },
 
   async getAttendanceByDate(date) {
-    const res = await fetch(`/api/attendance/${date}`, {
+    const res = await fetch(`${BASE_URL}/api/attendance/${date}`, {
       headers: getHeaders(false)
     });
     if (!res.ok) {
@@ -97,7 +102,7 @@ export const api = {
   },
 
   async saveAttendance(date, records) {
-    const res = await fetch('/api/attendance', {
+    const res = await fetch(`${BASE_URL}/api/attendance`, {
       method: 'POST',
       headers: getHeaders(true),
       body: JSON.stringify({ date, records })
@@ -110,7 +115,7 @@ export const api = {
 
   // Status & Utility APIs
   async getStatus() {
-    const res = await fetch('/api/status', {
+    const res = await fetch(`${BASE_URL}/api/status`, {
       headers: getHeaders(false)
     });
     if (!res.ok) {
@@ -120,7 +125,7 @@ export const api = {
   },
 
   async seedData() {
-    const res = await fetch('/api/seed', {
+    const res = await fetch(`${BASE_URL}/api/seed`, {
       method: 'POST',
       headers: getHeaders(false)
     });
@@ -132,7 +137,7 @@ export const api = {
 
   // Branches API
   async getBranches() {
-    const res = await fetch('/api/branches', {
+    const res = await fetch(`${BASE_URL}/api/branches`, {
       headers: getHeaders(false)
     });
     if (!res.ok) {
@@ -142,7 +147,7 @@ export const api = {
   },
 
   async addBranch(branch) {
-    const res = await fetch('/api/branches', {
+    const res = await fetch(`${BASE_URL}/api/branches`, {
       method: 'POST',
       headers: getHeaders(true),
       body: JSON.stringify(branch)
@@ -155,7 +160,7 @@ export const api = {
   },
 
   async deleteBranch(id) {
-    const res = await fetch(`/api/branches/${id}`, {
+    const res = await fetch(`${BASE_URL}/api/branches/${id}`, {
       method: 'DELETE',
       headers: getHeaders(false)
     });
